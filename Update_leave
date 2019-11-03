@@ -1,0 +1,43 @@
+public static String[] double_length(String str[],int len) throws IOException 
+    {
+         String temp[]=new String[2*len];
+         for(int i=0;i<len;i++)
+            temp[i]=str[i];
+        return temp;
+    }
+public static void update_leave(String str) throws IOException
+    {
+        String[] s=str.split(" ");
+        String[] final_str=new String[5];
+        int i=0;
+        try{
+           BufferedReader bf=new BufferedReader(new FileReader("abcd.csv"));
+           String line=bf.readLine();
+           while(line!=null)
+           {
+               String[] str_line=line.split(",");
+               if (str_line[0].equals(s[0])&&str_line[1].equals(s[1]))
+               {
+                   int a=Integer.parseInt(str_line[2]);
+                   int b=Integer.parseInt(s[2]);
+                   a=a-b;
+                   str_line[2]=Integer.toString(a);
+                   line=(Arrays.toString(str_line)).replace("[","").replace("]","");
+               }
+               final_str[i]=line;
+               i++; 
+               if (i==final_str.length)
+                  final_str=double_length(final_str,final_str.length);
+               line=bf.readLine();
+           }
+        }
+        catch{Exception e}
+        {
+            System.out.println("Problem in file reading");
+        }
+        PrintWriter pw=new PrintWriter("abcd.csv");
+        for(int j=0;j<i;j++)
+            pw.println(final_str[j]);
+        pw.flush();
+        pw.close();
+    }
